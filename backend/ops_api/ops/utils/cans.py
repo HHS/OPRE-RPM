@@ -162,17 +162,17 @@ def filter_by_attribute(cans: list[CAN], attribute_search: str, attribute_list) 
 
 
 def filter_by_fiscal_year_budget(
-    cans: list[CAN], fiscal_year_budget: list[Decimal], budget_fiscal_year: int
+    cans: list[CAN], budgets: list[Decimal], budget_fiscal_year: int
 ) -> list[CAN]:
     """
     Filters the list of cans based on the fiscal year budget's minimum and maximum values.
     """
-    if fiscal_year_budget:
+    if budget_fiscal_year:
         return [
             can
             for can in cans
             if any(
-                fiscal_year_budget[0] <= budget.budget <= fiscal_year_budget[1]
+                budgets[0] <= budget.budget <= budgets[1]
                 for budget in can.funding_budgets
                 if budget.fiscal_year == budget_fiscal_year
             )
@@ -181,7 +181,7 @@ def filter_by_fiscal_year_budget(
         return [
             can
             for can in cans
-            if any(fiscal_year_budget[0] <= budget.budget <= fiscal_year_budget[1] for budget in can.funding_budgets)
+            if any(budgets[0] <= budget.budget <= budgets[1] for budget in can.funding_budgets)
         ]
 
 
