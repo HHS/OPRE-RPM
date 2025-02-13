@@ -340,6 +340,33 @@ export const opsApi = createApi({
             query: () => `/portfolios/`,
             providesTags: ["Portfolios"]
         }),
+        getPortfolioById: builder.query({
+            query: (id) => `/portfolios/${id}`,
+            providesTags: ["Portfolios"]
+        }),
+        getPortfolioCansById: builder.query({
+            query: ({ portfolioId, year }) => {
+                const queryParams = [];
+                if (year) {
+                    queryParams.push(`year=${year}`);
+                }
+                return `/portfolios/${portfolioId}/cans/?${queryParams.join("&")}`;
+            },
+            providesTags: ["Portfolios"]
+        }),
+        getPortfolioCalcFunding: builder.query({
+            query: ({ portfolioId, fiscalYear, simulatedError }) => {
+                const queryParams = [];
+                if (fiscalYear) {
+                    queryParams.push(`fiscal_year=${fiscalYear}`);
+                }
+                if (simulatedError) {
+                    queryParams.push(`simulatedError`);
+                }
+                return `/portfolios/${portfolioId}/calcFunding/?${queryParams.join("&")}`;
+            },
+            providesTags: ["Portfolios"]
+        }),
         addBliPackage: builder.mutation({
             query: (body) => ({
                 url: `/bli-packages/`,
@@ -483,6 +510,9 @@ export const {
     useGetNotificationsByUserIdAndAgreementIdQuery,
     useDismissNotificationMutation,
     useGetPortfoliosQuery,
+    useGetPortfolioByIdQuery,
+    useGetPortfolioCansByIdQuery,
+    useGetPortfolioCalcFundingQuery,
     useAddBliPackageMutation,
     useGetAzureSasTokenQuery,
     useAddServicesComponentMutation,
